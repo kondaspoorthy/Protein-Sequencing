@@ -1,3 +1,5 @@
-file=open("data/human_p53.txt","r")
-text=file.readlines()
-print(text)
+txt="SPOORTHY"
+l=[]
+for i in range(0,len(txt),3):
+    l.append(txt[i])
+print(l)
