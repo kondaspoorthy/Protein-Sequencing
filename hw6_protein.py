@@ -50,7 +50,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    file=open(filename,"r")
+    obj=json.load(file)
+    dict={}
+    for each in obj:
+        for word in obj[each]:
+            word=word.replace("T","U")
+            dict[word]=each
+    return dict
 
 
 '''

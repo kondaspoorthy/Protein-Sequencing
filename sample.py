@@ -1,5 +1,5 @@
-txt="SPOORTHY"
-l=[]
-for i in range(0,len(txt),3):
-    l.append(txt[i])
+l=["SAR","PUR","SAN","KLO"]
+for i in range(0,len(l)):
+   l[i]=l[i].replace("S","M")
 print(l)
+
