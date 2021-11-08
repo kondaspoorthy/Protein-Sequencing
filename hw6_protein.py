@@ -67,7 +67,16 @@ Parameters: list of strs ; dict mapping strs to strs
 Returns: list of strs
 '''
 def generateProtein(codons, codonD):
-    return
+    lst=[]
+    for each in codons:
+        if each=="AUG" and lst==[]:
+            lst.append("Start")
+        elif(each=="UAA" or each=="UAG" or each=="UGA"):
+            lst.append("Stop")
+            break
+        else:
+            lst.append(codonD[each])
+    return lst
 
 
 '''
