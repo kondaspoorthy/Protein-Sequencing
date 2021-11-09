@@ -17,7 +17,10 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file=open(filename,"r")
+    res=file.read()
+    res=res.replace("\n","")
+    return res
 
 
 '''
@@ -27,7 +30,16 @@ Parameters: str ; int
 Returns: list of strs
 '''
 def dnaToRna(dna, startIndex):
-    return
+    dna=dna.replace("T","U")
+    lst=[]
+    for i in range(startIndex,len(dna),3):
+        str1=dna[i:i+3]
+        if(str1=="UAA" or str1=="UAG" or str1=="UGA"):
+            lst.append(str1)
+            break
+        else:
+            lst.append(str1)
+    return lst
 
 
 '''
@@ -38,7 +50,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    file=open(filename,"r")
+    obj=json.load(file)
+    dict={}
+    for each in obj:
+        for word in obj[each]:
+            word=word.replace("T","U")
+            dict[word]=each
+    return dict
 
 
 '''
@@ -48,7 +67,16 @@ Parameters: list of strs ; dict mapping strs to strs
 Returns: list of strs
 '''
 def generateProtein(codons, codonD):
-    return
+    lst=[]
+    for each in codons:
+        if each=="AUG" and lst==[]:
+            lst.append("Start")
+        elif(each=="UAA" or each=="UAG" or each=="UGA"):
+            lst.append("Stop")
+            break
+        else:
+            lst.append(codonD[each])
+    return lst
 
 
 '''
@@ -58,7 +86,25 @@ Parameters: str ; str
 Returns: 2D list of strs
 '''
 def synthesizeProteins(dnaFilename, codonFilename):
-    return
+    dna=readFile(dnaFilename)
+    codondict=makeCodonDictionary(codonFilename)
+    counter=0
+    proteinlst=[]
+    i=0
+    while(i!=len(dna)):
+        str2=dna[i:i+3]
+        if(str2=="ATG"):
+            RNA=dnaToRna(dna,i)
+            lst=generateProtein(RNA,codondict)
+            proteinlst.append(lst)
+            i=i+3*len(RNA)
+        else:
+            counter=counter+1
+            i=i+1
+    #print("Total Bases:",len(dna)/3)
+    #print("Unused Bases:",counter)
+    #print(len(proteinlst))
+    return proteinlst
 
 
 def runWeek1():
