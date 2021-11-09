@@ -7,6 +7,9 @@ Roll Number:
 import hw6_protein_tests as test
 
 project = "Protein" # don't edit this
+import numpy
+import matplotlib
+
 
 ### WEEK 1 ###
 
