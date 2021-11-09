@@ -17,7 +17,10 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file=open(filename,"r")
+    res=file.read()
+    res=res.replace("\n","")
+    return res
 
 
 '''
@@ -27,7 +30,16 @@ Parameters: str ; int
 Returns: list of strs
 '''
 def dnaToRna(dna, startIndex):
-    return
+    dna=dna.replace("T","U")
+    lst=[]
+    for i in range(startIndex,len(dna),3):
+        str1=dna[i:i+3]
+        if(str1=="UAA" or str1=="UAG" or str1=="UGA"):
+            lst.append(str1)
+            break
+        else:
+            lst.append(str1)
+    return lst
 
 
 '''
@@ -38,7 +50,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    file=open(filename,"r")
+    obj=json.load(file)
+    dict={}
+    for each in obj:
+        for word in obj[each]:
+            word=word.replace("T","U")
+            dict[word]=each
+    return dict
 
 
 '''
