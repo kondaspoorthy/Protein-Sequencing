@@ -166,7 +166,33 @@ Parameters: 2D list of strs ; 2D list of strs ; float
 Returns: 2D list of values
 '''
 def findAminoAcidDifferences(proteinList1, proteinList2, cutoff):
-    return
+    amino1=combineProteins(proteinList1)
+    aminodict1=aminoAcidDictionary(amino1)
+    amino2=combineProteins(proteinList2)
+    aminodict2=aminoAcidDictionary(amino2)
+    len1=len(amino1)
+    len2=len(amino2)
+    dict1={}
+    dict2={}
+    res=[]
+    for each in aminodict1:
+        dict1[each]=aminodict1[each]/len1
+    for each in aminodict2:
+        dict2[each]=aminodict2[each]/len2
+    for each in dict1:
+        if each not in dict2:
+            if (dict1[each]>cutoff):
+                res.append([each,dict1[each],0])
+        elif(each!="Start" and  each!="Stop"): 
+            sub=dict1[each]-dict2[each]
+            if(abs(sub)>cutoff):
+                res.append([each,dict1[each],dict2[each]])
+    for each in dict2:
+        if each not in dict1 and dict2[each]>cutoff:
+            if(each!="Start" and each!="Stop"):
+                res.append([each,0,dict2[each]])
+    return res
+
 
 
 '''
@@ -176,6 +202,30 @@ Parameters: 2D list of strs ; 2D list of values
 Returns: None
 '''
 def displayTextResults(commonalities, differences):
+    print("The following proteins occurred in both DNA Sequences:")
+    lst1=commonalities[:]
+    lst2=differences[:]
+    lst3=[]
+    for each in lst1:
+        str=""
+        for word in each:
+            if(word!="Start" and word!="Stop"):
+                if(len(each)>4 and each.index(word)!=len(each)-2):
+                    str=str+word+"-"
+                elif(len(each)>4):
+                    str=str+word
+                else:
+                    str=word
+        lst3.append(str)
+    lst4=lst3.sort()
+    for i in lst3:
+        print(i)
+    print("The following amino acids occurred at very different rates in the two DNA sequence")
+    for each in lst2:
+        r1=round(each[1]*100,2)
+        r2=round(each[2]*100,2)
+        print(each[0],":",r1, "% in  seq1,",r2, "% in seq2") 
+
     return
 
 
