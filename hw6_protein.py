@@ -17,7 +17,10 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file=open(filename,"r")
+    res=file.read()
+    res=res.replace("\n","")
+    return res
 
 
 '''
