@@ -302,6 +302,15 @@ Returns: None
 '''
 def createChart(xLabels, freqList1, label1, freqList2, label2, edgeList=None):
     import matplotlib.pyplot as plt
+    import numpy as np
+    w=0.4
+    xaxis= np.arange(len(xLabels))
+    plt.bar(xaxis-0.2,freqList1,width=-w,label=label1)
+    plt.bar(xaxis+0.2,freqList2,width=w,label=label2)
+    plt.xticks(xaxis,xLabels,rotation="horizontal")
+    plt.legend()
+    plt.title("Genes comparision of human and elephant")
+    plt.show()
     return
 
 
