@@ -307,7 +307,7 @@ def createChart(xLabels, freqList1, label1, freqList2, label2, edgeList=None):
     xaxis= np.arange(len(xLabels))
     plt.bar(xaxis-0.2,freqList1,width=-w,label=label1,edgecolor=edgeList)
     plt.bar(xaxis+0.2,freqList2,width=w,label=label2,edgecolor=edgeList)
-    plt.xticks(xaxis,xLabels,rotation="horizontal")
+    plt.xticks(xaxis,xLabels,rotation="vertical")
     plt.legend()
     plt.title("Genes comparision of human and elephant")
     plt.show()
@@ -340,6 +340,26 @@ Parameters: no parameters
 Returns: None
 '''
 def runFullProgram():
+    dna1=readFile("data/human_p53.txt")
+    dna2=readFile("data/elephant_p53.txt")
+    codonD= makeCodonDictionary("data/codon_table.json")
+    proteinlst1=synthesizeProteins("data/human_p53.txt","data/codon_table.json")
+    proteinlst2=synthesizeProteins("data/elephant_p53.txt","data/codon_table.json")
+    common=commonProteins(proteinlst1,proteinlst2)
+    combineprotein1=combineProteins(proteinlst1)
+    combineprotein2=combineProteins(proteinlst2)
+    aminodict1=aminoAcidDictionary(combineprotein1)
+    aminodict2=aminoAcidDictionary(combineprotein2)
+    Differences=findAminoAcidDifferences(proteinlst1, proteinlst2, 0.005)
+    displayTextResults(common,Differences) 
+    chartlabels= makeAminoAcidLabels(proteinlst1,proteinlst2) 
+    f1=setupChartData(chartlabels, proteinlst1) 
+    f2=setupChartData(chartlabels,proteinlst2)
+    createChart(chartlabels, f1, "human", f2,"elephant",edgeList=None)
+    edges = makeEdgeList(chartlabels, findAminoAcidDifferences(proteinlst1, proteinlst2, 0.005))
+    createChart(chartlabels, f1, "human", f2, "elephant", edgeList=edges)
+
+
     return
 
 
