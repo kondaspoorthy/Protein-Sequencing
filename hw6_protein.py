@@ -305,8 +305,8 @@ def createChart(xLabels, freqList1, label1, freqList2, label2, edgeList=None):
     import numpy as np
     w=0.4
     xaxis= np.arange(len(xLabels))
-    plt.bar(xaxis-0.2,freqList1,width=-w,label=label1)
-    plt.bar(xaxis+0.2,freqList2,width=w,label=label2)
+    plt.bar(xaxis-0.2,freqList1,width=-w,label=label1,edgecolor=edgeList)
+    plt.bar(xaxis+0.2,freqList2,width=w,label=label2,edgecolor=edgeList)
     plt.xticks(xaxis,xLabels,rotation="horizontal")
     plt.legend()
     plt.title("Genes comparision of human and elephant")
@@ -321,7 +321,16 @@ Parameters: list of strs ; 2D list of values
 Returns: list of strs
 '''
 def makeEdgeList(labels, biggestDiffs):
-    return
+    newlst=[]
+    for each in labels:
+        count=0
+        for word in biggestDiffs:
+            if word[0]==each:
+                newlst.append("black")
+                count=count+1
+        if(count==0):
+            newlst.append("white")
+    return newlst
 
 
 '''
