@@ -17,7 +17,10 @@ Parameters: str
 Returns: str
 '''
 def readFile(filename):
-    return
+    file=open(filename,"r")
+    res=file.read()
+    res=res.replace("\n","")
+    return res
 
 
 '''
@@ -27,7 +30,16 @@ Parameters: str ; int
 Returns: list of strs
 '''
 def dnaToRna(dna, startIndex):
-    return
+    dna=dna.replace("T","U")
+    lst=[]
+    for i in range(startIndex,len(dna),3):
+        str1=dna[i:i+3]
+        if(str1=="UAA" or str1=="UAG" or str1=="UGA"):
+            lst.append(str1)
+            break
+        else:
+            lst.append(str1)
+    return lst
 
 
 '''
@@ -38,7 +50,14 @@ Returns: dict mapping strs to strs
 '''
 def makeCodonDictionary(filename):
     import json
-    return
+    file=open(filename,"r")
+    obj=json.load(file)
+    dict={}
+    for each in obj:
+        for word in obj[each]:
+            word=word.replace("T","U")
+            dict[word]=each
+    return dict
 
 
 '''
@@ -48,7 +67,16 @@ Parameters: list of strs ; dict mapping strs to strs
 Returns: list of strs
 '''
 def generateProtein(codons, codonD):
-    return
+    lst=[]
+    for each in codons:
+        if each=="AUG" and lst==[]:
+            lst.append("Start")
+        elif(each=="UAA" or each=="UAG" or each=="UGA"):
+            lst.append("Stop")
+            break
+        else:
+            lst.append(codonD[each])
+    return lst
 
 
 '''
@@ -58,7 +86,25 @@ Parameters: str ; str
 Returns: 2D list of strs
 '''
 def synthesizeProteins(dnaFilename, codonFilename):
-    return
+    dna=readFile(dnaFilename)
+    codondict=makeCodonDictionary(codonFilename)
+    counter=0
+    proteinlst=[]
+    i=0
+    while(i!=len(dna)):
+        str2=dna[i:i+3]
+        if(str2=="ATG"):
+            RNA=dnaToRna(dna,i)
+            lst=generateProtein(RNA,codondict)
+            proteinlst.append(lst)
+            i=i+3*len(RNA)
+        else:
+            counter=counter+1
+            i=i+1
+    #print("Total Bases:",len(dna)/3)
+    #print("Unused Bases:",counter)
+    #print(len(proteinlst))
+    return proteinlst
 
 
 def runWeek1():
@@ -77,7 +123,11 @@ Parameters: 2D list of strs ; 2D list of strs
 Returns: 2D list of strs
 '''
 def commonProteins(proteinList1, proteinList2):
-    return
+    resultlst=[]
+    for each in proteinList1:
+        if each in proteinList2 and each not in resultlst:
+            resultlst.append(each)
+    return resultlst
 
 
 '''
@@ -87,7 +137,11 @@ Parameters: 2D list of strs
 Returns: list of strs
 '''
 def combineProteins(proteinList):
-    return
+    result=[]
+    for protein in proteinList:
+        for amino in protein:
+            result.append(amino)
+    return result
 
 
 '''
@@ -97,7 +151,12 @@ Parameters: list of strs
 Returns: dict mapping strs to ints
 '''
 def aminoAcidDictionary(aaList):
-    return
+    dict={}
+    for each in aaList:
+        if each not in dict:
+            dict[each]=0
+        dict[each]+=1
+    return dict
 
 
 '''
@@ -107,7 +166,33 @@ Parameters: 2D list of strs ; 2D list of strs ; float
 Returns: 2D list of values
 '''
 def findAminoAcidDifferences(proteinList1, proteinList2, cutoff):
-    return
+    amino1=combineProteins(proteinList1)
+    aminodict1=aminoAcidDictionary(amino1)
+    amino2=combineProteins(proteinList2)
+    aminodict2=aminoAcidDictionary(amino2)
+    len1=len(amino1)
+    len2=len(amino2)
+    dict1={}
+    dict2={}
+    res=[]
+    for each in aminodict1:
+        dict1[each]=aminodict1[each]/len1
+    for each in aminodict2:
+        dict2[each]=aminodict2[each]/len2
+    for each in dict1:
+        if each not in dict2:
+            if (dict1[each]>cutoff):
+                res.append([each,dict1[each],0])
+        elif(each!="Start" and  each!="Stop"): 
+            sub=dict1[each]-dict2[each]
+            if(abs(sub)>cutoff):
+                res.append([each,dict1[each],dict2[each]])
+    for each in dict2:
+        if each not in dict1 and dict2[each]>cutoff:
+            if(each!="Start" and each!="Stop"):
+                res.append([each,0,dict2[each]])
+    return res
+
 
 
 '''
@@ -192,12 +277,11 @@ if __name__ == "__main__":
     runWeek1()
 
     ## Uncomment these for Week 2 ##
-    """
     print("\n" + "#"*15 + " WEEK 2 TESTS " +  "#" * 16 + "\n")
     test.week2Tests()
     print("\n" + "#"*15 + " WEEK 2 OUTPUT " + "#" * 15 + "\n")
     runWeek2()
-    """
+
 
     ## Uncomment these for Week 3 ##
     """
