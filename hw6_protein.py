@@ -202,30 +202,6 @@ Parameters: 2D list of strs ; 2D list of values
 Returns: None
 '''
 def displayTextResults(commonalities, differences):
-    print("The following proteins occurred in both DNA Sequences:")
-    lst1=commonalities[:]
-    lst2=differences[:]
-    lst3=[]
-    for each in lst1:
-        str=""
-        for word in each:
-            if(word!="Start" and word!="Stop"):
-                if(len(each)>4 and each.index(word)!=len(each)-2):
-                    str=str+word+"-"
-                elif(len(each)>4):
-                    str=str+word
-                else:
-                    str=word
-        lst3.append(str)
-    lst4=lst3.sort()
-    for i in lst3:
-        print(i)
-    print("The following amino acids occurred at very different rates in the two DNA sequence")
-    for each in lst2:
-        r1=round(each[1]*100,2)
-        r2=round(each[2]*100,2)
-        print(each[0],":",r1, "% in  seq1,",r2, "% in seq2") 
-
     return
 
 
